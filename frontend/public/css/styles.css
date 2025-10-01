@@ -1,0 +1,75 @@
+/* Base reset */
+* {
+  box-sizing: border-box;
+  margin: 0; 
+  padding: 0;
+}
+body {
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  background: #f2f7f9;
+  color: #333;
+}
+a { color: #198754; } /* Bootstrap green */
+a:hover { text-decoration: underline; }
+
+/* Hero section overrides */
+.home-hero {
+  text-align: center;
+  padding: 100px 20px;
+  background: linear-gradient(to right, #d4edda, #c3e6cb);
+  border-radius: 8px;
+}
+.home-hero h2, 
+.home-hero .display-4 {
+  color: #1f4050;
+  font-weight: bold;
+}
+.btn-primary, .btn-success {
+  background-color: #27ae60 !important;
+  border-color: #27ae60 !important;
+}
+.btn-primary:hover, .btn-success:hover {
+  background-color: #219150 !important;
+  border-color: #219150 !important;
+}
+
+/* Product cards */
+.card {
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+}
+.card-title {
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+.card-text.small {
+  color: #666;
+}
+
+/* Footer */
+footer {
+  margin-top: 40px;
+}
+footer p {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+/* Modal override */
+.modal-inner {
+  width: 100%;
+  max-width: 650px;
+  background: #fff;
+  border-radius: 6px;
+  padding: 20px;
+}
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+  .home-hero {
+    padding: 60px 15px;
+  }
+}

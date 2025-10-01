@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Checkout — GreenShop</title>
+  <link href="/public/css/styles.css" rel="stylesheet">
+</head>
+<body>
+  <header class="site-header">
+    <h1><a href="/home">GreenShop</a></h1>
+    <nav>
+      <a href="/products">Products</a>
+      <a href="/orders">Orders</a>
+    </nav>
+  </header>
+
+  <main class="container section">
+    <h2>Checkout</h2>
+
+    <% if (cartItems && cartItems.length > 0) { %>
+      <ul class="checkout-list">
+        <% cartItems.forEach(item => { %>
+          <li class="checkout-item">
+            <span class="ci-name"><%= item.name %></span>
+            <span class="ci-qty">× <%= item.qty %></span>
+            <span class="ci-price">£<%= item.price.toFixed(2) %></span>
+          </li>
+        <% }) %>
+      </ul>
+
+      <p class="checkout-total"><strong>Total:</strong> £<%= total.toFixed(2) %></p>
+      <button id="confirmBtn" class="btn-primary">Confirm Purchase</button>
+      <div id="message" class="order-message"></div>
+    <% } else { %>
+      <p>Your cart is empty. <a href="/products">Return to products</a></p>
+    <% } %>
+  </main>
+
+  <script>
+    const cartItems = JSON.parse('<%- JSON.stringify(cartItems || []) %>');
+    const totalAmount = JSON.parse('<%- JSON.stringify(total || 0) %>');
+
+    document.getElementById("confirmBtn")?.addEventListener("click", () => {
+      if (cartItems.length === 0) {
+        alert("No items to checkout");
+        return;
+      }
+      const body = {
+        items: cartItems.map(i => ({ productId: i.productId, qty: i.qty })),
+        payer: { name: "Test User", email: "test@example.com" },
+        paymentId: "DUMMY-" + Date.now(),
+        total: totalAmount
+      };
+      fetch('/orders/api', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      }).then(r => r.json())
+        .then(resp => {
+          if (resp.success || resp.order) {
+            document.getElementById('message').innerHTML =
+              '<p class="success">✅ Order placed! <a href="/orders">View orders</a></p>';
+            localStorage.removeItem("cart");
+          } else {
+            document.getElementById('message').innerText = '❌ Order failed.';
+          }
+        });
+    });
+  </script>
+</body>
+</html>
